@@ -296,6 +296,50 @@ namespace sigslot {
         virtual void disconnect(has_slots<mt_policy>* pslot) = 0;
     };
 
+    template<class mt_policy = SIGSLOT_DEFAULT_MT_POLICY>
+    class has_slots : public mt_policy
+    {
+    private:
+        typedef std::set<_signal_base<mt_policy> *> sender_set;
+        typedef typename sender_set::const_iterator const_iterator;
+
+    public:
+        void signal_connect(_signal_base<mt_policy>* sender)
+        {
+            lock_block<mt_policy> lock(this);
+            m_senders.insert(sender);
+        }
+
+        void signal_disconnect(_signal_base<mt_policy>* sender)
+        {
+            lock_block<mt_policy> lock(this);
+            m_senders.erase(sender);
+        }
+
+        virtual ~has_slots()
+        {
+            disconnect();
+        }
+
+        void disconnect()
+        {
+            lock_block<mt_policy> lock(this);
+            const_iterator it = m_senders.begin();
+            const_iterator itEnd = m_senders.end();
+
+            while(it != itEnd)
+            {
+                (*it)->disconnect(this);
+                ++it;
+            }
+
+            m_senders.erase(m_senders.begin(), m_senders.end());
+        }
+
+    private:
+        sender_set m_senders;
+    };
+
     template<class mt_policy>
     class _connection_base0
     {
@@ -389,12 +433,6 @@ namespace sigslot {
     class _connection0 : public _connection_base0<mt_policy>
     {
     public:
-        _connection0()
-        {
-            m_pobject = NULL;
-            m_pmemfun = NULL;
-        }
-
         _connection0(dest_type* pobject, void (dest_type::*pmemfun)())
         {
             m_pobject = pobject;
@@ -420,12 +458,6 @@ namespace sigslot {
     class _connection1 : public _connection_base1<arg1_type, mt_policy>
     {
     public:
-        _connection1()
-        {
-            m_pobject = NULL;
-            m_pmemfun = NULL;
-        }
-
         _connection1(dest_type* pobject, void (dest_type::*pmemfun)(arg1_type))
         {
             m_pobject = pobject;
@@ -451,12 +483,6 @@ namespace sigslot {
     class _connection2 : public _connection_base2<arg1_type, arg2_type, mt_policy>
     {
     public:
-        _connection2()
-        {
-            m_pobject = NULL;
-            m_pmemfun = NULL;
-        }
-
         _connection2(dest_type* pobject, void (dest_type::*pmemfun)(arg1_type,
             arg2_type))
         {
@@ -483,12 +509,6 @@ namespace sigslot {
     class _connection3 : public _connection_base3<arg1_type, arg2_type, arg3_type, mt_policy>
     {
     public:
-        _connection3()
-        {
-            m_pobject = NULL;
-            m_pmemfun = NULL;
-        }
-
         _connection3(dest_type* pobject, void (dest_type::*pmemfun)(arg1_type,
             arg2_type, arg3_type))
         {
@@ -517,12 +537,6 @@ namespace sigslot {
         arg3_type, arg4_type, mt_policy>
     {
     public:
-        _connection4()
-        {
-            m_pobject = NULL;
-            m_pmemfun = NULL;
-        }
-
         _connection4(dest_type* pobject, void (dest_type::*pmemfun)(arg1_type,
             arg2_type, arg3_type, arg4_type))
         {
@@ -553,12 +567,6 @@ namespace sigslot {
         arg3_type, arg4_type, arg5_type, mt_policy>
     {
     public:
-        _connection5()
-        {
-            m_pobject = NULL;
-            m_pmemfun = NULL;
-        }
-
         _connection5(dest_type* pobject, void (dest_type::*pmemfun)(arg1_type,
             arg2_type, arg3_type, arg4_type, arg5_type))
         {
@@ -589,12 +597,6 @@ namespace sigslot {
         arg3_type, arg4_type, arg5_type, arg6_type, mt_policy>
     {
     public:
-        _connection6()
-        {
-            m_pobject = NULL;
-            m_pmemfun = NULL;
-        }
-
         _connection6(dest_type* pobject, void (dest_type::*pmemfun)(arg1_type,
             arg2_type, arg3_type, arg4_type, arg5_type, arg6_type))
         {
@@ -625,12 +627,6 @@ namespace sigslot {
         arg3_type, arg4_type, arg5_type, arg6_type, arg7_type, mt_policy>
     {
     public:
-        _connection7()
-        {
-            m_pobject = NULL;
-            m_pmemfun = NULL;
-        }
-
         _connection7(dest_type* pobject, void (dest_type::*pmemfun)(arg1_type,
             arg2_type, arg3_type, arg4_type, arg5_type, arg6_type, arg7_type))
         {
@@ -662,12 +658,6 @@ namespace sigslot {
         arg3_type, arg4_type, arg5_type, arg6_type, arg7_type, arg8_type, mt_policy>
     {
     public:
-        _connection8()
-        {
-            m_pobject = NULL;
-            m_pmemfun = NULL;
-        }
-
         _connection8(dest_type* pobject, void (dest_type::*pmemfun)(arg1_type,
             arg2_type, arg3_type, arg4_type, arg5_type, arg6_type,
             arg7_type, arg8_type))
@@ -691,50 +681,6 @@ namespace sigslot {
         dest_type* m_pobject;
         void (dest_type::* m_pmemfun)(arg1_type, arg2_type, arg3_type, arg4_type,
             arg5_type, arg6_type, arg7_type, arg8_type);
-    };
-
-    template<class mt_policy = SIGSLOT_DEFAULT_MT_POLICY>
-    class has_slots : public mt_policy
-    {
-    private:
-        typedef std::set<_signal_base<mt_policy> *> sender_set;
-        typedef typename sender_set::const_iterator const_iterator;
-
-    public:
-        void signal_connect(_signal_base<mt_policy>* sender)
-        {
-            lock_block<mt_policy> lock(this);
-            m_senders.insert(sender);
-        }
-
-        void signal_disconnect(_signal_base<mt_policy>* sender)
-        {
-            lock_block<mt_policy> lock(this);
-            m_senders.erase(sender);
-        }
-
-        virtual ~has_slots()
-        {
-            disconnect();
-        }
-
-        void disconnect()
-        {
-            lock_block<mt_policy> lock(this);
-            const_iterator it = m_senders.begin();
-            const_iterator itEnd = m_senders.end();
-
-            while(it != itEnd)
-            {
-                (*it)->disconnect(this);
-                ++it;
-            }
-
-            m_senders.erase(m_senders.begin(), m_senders.end());
-        }
-
-    private:
-        sender_set m_senders;
     };
 
     template<class mt_policy= SIGSLOT_DEFAULT_MT_POLICY>
