@@ -290,6 +290,13 @@ namespace sigslot {
     class has_slots;
 
     template<class mt_policy>
+    class _signal_base : public mt_policy
+    {
+    public:
+        virtual void disconnect(has_slots<mt_policy>* pslot) = 0;
+    };
+
+    template<class mt_policy>
     class _connection_base0
     {
     public:
@@ -684,13 +691,6 @@ namespace sigslot {
         dest_type* m_pobject;
         void (dest_type::* m_pmemfun)(arg1_type, arg2_type, arg3_type, arg4_type,
             arg5_type, arg6_type, arg7_type, arg8_type);
-    };
-
-    template<class mt_policy>
-    class _signal_base : public mt_policy
-    {
-    public:
-        virtual void disconnect(has_slots<mt_policy>* pslot) = 0;
     };
 
     template<class mt_policy = SIGSLOT_DEFAULT_MT_POLICY>
