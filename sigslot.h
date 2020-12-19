@@ -994,8 +994,8 @@ namespace sigslot {
 
                 if((*it)->getdest() == pslot)
                 {
+                    delete *it;
                     m_connected_slots.erase(it);
-                    //            delete *it;
                 }
 
                 it = itNext;
@@ -1153,8 +1153,8 @@ namespace sigslot {
 
                 if((*it)->getdest() == pslot)
                 {
+                    delete *it;
                     m_connected_slots.erase(it);
-                    //            delete *it;
                 }
 
                 it = itNext;
@@ -1298,8 +1298,8 @@ namespace sigslot {
 
                 if((*it)->getdest() == pslot)
                 {
+                    delete *it;
                     m_connected_slots.erase(it);
-                    //            delete *it;
                 }
 
                 it = itNext;
@@ -1443,8 +1443,8 @@ namespace sigslot {
 
                 if((*it)->getdest() == pslot)
                 {
+                    delete *it;
                     m_connected_slots.erase(it);
-                    //            delete *it;
                 }
 
                 it = itNext;
@@ -1588,8 +1588,8 @@ namespace sigslot {
 
                 if((*it)->getdest() == pslot)
                 {
+                    delete *it;
                     m_connected_slots.erase(it);
-                    //            delete *it;
                 }
 
                 it = itNext;
@@ -1737,8 +1737,8 @@ namespace sigslot {
 
                 if((*it)->getdest() == pslot)
                 {
+                    delete *it;
                     m_connected_slots.erase(it);
-                    //            delete *it;
                 }
 
                 it = itNext;
@@ -1887,8 +1887,8 @@ namespace sigslot {
 
                 if((*it)->getdest() == pslot)
                 {
+                    delete *it;
                     m_connected_slots.erase(it);
-                    //            delete *it;
                 }
 
                 it = itNext;
@@ -2038,8 +2038,8 @@ namespace sigslot {
 
                 if((*it)->getdest() == pslot)
                 {
+                    delete *it;
                     m_connected_slots.erase(it);
-                    //            delete *it;
                 }
 
                 it = itNext;
@@ -2191,8 +2191,8 @@ namespace sigslot {
 
                 if((*it)->getdest() == pslot)
                 {
+                    delete *it;
                     m_connected_slots.erase(it);
-                    //            delete *it;
                 }
 
                 it = itNext;
