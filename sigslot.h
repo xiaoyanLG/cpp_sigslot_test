@@ -974,7 +974,6 @@ namespace sigslot {
                     delete *it;
                     m_connected_slots.erase(it);
                     pclass->signal_disconnect(this);
-                    return;
                 }
 
                 ++it;
@@ -1133,7 +1132,6 @@ namespace sigslot {
                     delete *it;
                     m_connected_slots.erase(it);
                     pclass->signal_disconnect(this);
-                    return;
                 }
 
                 ++it;
@@ -1278,7 +1276,6 @@ namespace sigslot {
                     delete *it;
                     m_connected_slots.erase(it);
                     pclass->signal_disconnect(this);
-                    return;
                 }
 
                 ++it;
@@ -1423,7 +1420,6 @@ namespace sigslot {
                     delete *it;
                     m_connected_slots.erase(it);
                     pclass->signal_disconnect(this);
-                    return;
                 }
 
                 ++it;
@@ -1568,7 +1564,6 @@ namespace sigslot {
                     delete *it;
                     m_connected_slots.erase(it);
                     pclass->signal_disconnect(this);
-                    return;
                 }
 
                 ++it;
@@ -1717,7 +1712,6 @@ namespace sigslot {
                     delete *it;
                     m_connected_slots.erase(it);
                     pclass->signal_disconnect(this);
-                    return;
                 }
 
                 ++it;
@@ -1867,7 +1861,6 @@ namespace sigslot {
                     delete *it;
                     m_connected_slots.erase(it);
                     pclass->signal_disconnect(this);
-                    return;
                 }
 
                 ++it;
@@ -2018,7 +2011,6 @@ namespace sigslot {
                     delete *it;
                     m_connected_slots.erase(it);
                     pclass->signal_disconnect(this);
-                    return;
                 }
 
                 ++it;
@@ -2171,7 +2163,6 @@ namespace sigslot {
                     delete *it;
                     m_connected_slots.erase(it);
                     pclass->signal_disconnect(this);
-                    return;
                 }
 
                 ++it;
