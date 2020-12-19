@@ -296,50 +296,6 @@ namespace sigslot {
         virtual void disconnect(has_slots<mt_policy>* pslot) = 0;
     };
 
-    template<class mt_policy = SIGSLOT_DEFAULT_MT_POLICY>
-    class has_slots : public mt_policy
-    {
-    private:
-        typedef std::set<_signal_base<mt_policy> *> sender_set;
-        typedef typename sender_set::const_iterator const_iterator;
-
-    public:
-        void signal_connect(_signal_base<mt_policy>* sender)
-        {
-            lock_block<mt_policy> lock(this);
-            m_senders.insert(sender);
-        }
-
-        void signal_disconnect(_signal_base<mt_policy>* sender)
-        {
-            lock_block<mt_policy> lock(this);
-            m_senders.erase(sender);
-        }
-
-        virtual ~has_slots()
-        {
-            disconnect();
-        }
-
-        void disconnect()
-        {
-            lock_block<mt_policy> lock(this);
-            const_iterator it = m_senders.begin();
-            const_iterator itEnd = m_senders.end();
-
-            while(it != itEnd)
-            {
-                (*it)->disconnect(this);
-                ++it;
-            }
-
-            m_senders.erase(m_senders.begin(), m_senders.end());
-        }
-
-    private:
-        sender_set m_senders;
-    };
-
     template<class mt_policy>
     class _connection_base0
     {
@@ -690,7 +646,7 @@ namespace sigslot {
         typedef typename std::list<_connection_base0<mt_policy> *>  connections_list;
         ~signal0()
         {
-            disconnect();
+            signal_destroy(true);
         }
 
         template<class desttype>
@@ -727,6 +683,12 @@ namespace sigslot {
 
         void disconnect(has_slots<mt_policy>* pslot = NULL)
         {
+            signal_destroy(false, pslot);
+        }
+
+    private:
+        void signal_destroy(bool destroy, has_slots<mt_policy>* pslot = NULL)
+        {
             lock_block<mt_policy> lock(this);
             typename connections_list::iterator it = m_connected_slots.begin();
             typename connections_list::iterator itEnd = m_connected_slots.end();
@@ -735,6 +697,9 @@ namespace sigslot {
             {
                 typename connections_list::iterator itNext = it;
                 ++itNext;
+
+                if (destroy)
+                    (*it)->getdest()->signal_disconnect(this);
 
                 if(pslot == NULL || (*it)->getdest() == pslot)
                 {
@@ -758,7 +723,7 @@ namespace sigslot {
 
         ~signal1()
         {
-            disconnect();
+            signal_destroy(true);
         }
 
         template<class desttype>
@@ -795,6 +760,12 @@ namespace sigslot {
 
         void disconnect(has_slots<mt_policy>* pslot = NULL)
         {
+            signal_destroy(false, pslot);
+        }
+
+    private:
+        void signal_destroy(bool destroy, has_slots<mt_policy>* pslot = NULL)
+        {
             lock_block<mt_policy> lock(this);
             typename connections_list::iterator it = m_connected_slots.begin();
             typename connections_list::iterator itEnd = m_connected_slots.end();
@@ -803,6 +774,9 @@ namespace sigslot {
             {
                 typename connections_list::iterator itNext = it;
                 ++itNext;
+
+                if (destroy)
+                    (*it)->getdest()->signal_disconnect(this);
 
                 if(pslot == NULL || (*it)->getdest() == pslot)
                 {
@@ -828,7 +802,7 @@ namespace sigslot {
 
         ~signal2()
         {
-            disconnect();
+            signal_destroy(true);
         }
 
         template<class desttype>
@@ -866,6 +840,12 @@ namespace sigslot {
 
         void disconnect(has_slots<mt_policy>* pslot = NULL)
         {
+            signal_destroy(false, pslot);
+        }
+
+    private:
+        void signal_destroy(bool destroy, has_slots<mt_policy>* pslot = NULL)
+        {
             lock_block<mt_policy> lock(this);
             typename connections_list::iterator it = m_connected_slots.begin();
             typename connections_list::iterator itEnd = m_connected_slots.end();
@@ -874,6 +854,9 @@ namespace sigslot {
             {
                 typename connections_list::iterator itNext = it;
                 ++itNext;
+
+                if (destroy)
+                    (*it)->getdest()->signal_disconnect(this);
 
                 if(pslot == NULL || (*it)->getdest() == pslot)
                 {
@@ -898,7 +881,7 @@ namespace sigslot {
 
         ~signal3()
         {
-            disconnect();
+            signal_destroy(true);
         }
 
         template<class desttype>
@@ -937,6 +920,12 @@ namespace sigslot {
 
         void disconnect(has_slots<mt_policy>* pslot = NULL)
         {
+            signal_destroy(false, pslot);
+        }
+
+    private:
+        void signal_destroy(bool destroy, has_slots<mt_policy>* pslot = NULL)
+        {
             lock_block<mt_policy> lock(this);
             typename connections_list::iterator it = m_connected_slots.begin();
             typename connections_list::iterator itEnd = m_connected_slots.end();
@@ -945,6 +934,9 @@ namespace sigslot {
             {
                 typename connections_list::iterator itNext = it;
                 ++itNext;
+
+                if (destroy)
+                    (*it)->getdest()->signal_disconnect(this);
 
                 if(pslot == NULL || (*it)->getdest() == pslot)
                 {
@@ -969,7 +961,7 @@ namespace sigslot {
 
         ~signal4()
         {
-            disconnect();
+            signal_destroy(true);
         }
 
         template<class desttype>
@@ -1008,6 +1000,12 @@ namespace sigslot {
 
         void disconnect(has_slots<mt_policy>* pslot = NULL)
         {
+            signal_destroy(false, pslot);
+        }
+
+    private:
+        void signal_destroy(bool destroy, has_slots<mt_policy>* pslot = NULL)
+        {
             lock_block<mt_policy> lock(this);
             typename connections_list::iterator it = m_connected_slots.begin();
             typename connections_list::iterator itEnd = m_connected_slots.end();
@@ -1016,6 +1014,9 @@ namespace sigslot {
             {
                 typename connections_list::iterator itNext = it;
                 ++itNext;
+
+                if (destroy)
+                    (*it)->getdest()->signal_disconnect(this);
 
                 if(pslot == NULL || (*it)->getdest() == pslot)
                 {
@@ -1041,7 +1042,7 @@ namespace sigslot {
 
         ~signal5()
         {
-            disconnect();
+            signal_destroy(true);
         }
 
         template<class desttype>
@@ -1082,6 +1083,12 @@ namespace sigslot {
 
         void disconnect(has_slots<mt_policy>* pslot = NULL)
         {
+            signal_destroy(false, pslot);
+        }
+
+    private:
+        void signal_destroy(bool destroy, has_slots<mt_policy>* pslot = NULL)
+        {
             lock_block<mt_policy> lock(this);
             typename connections_list::iterator it = m_connected_slots.begin();
             typename connections_list::iterator itEnd = m_connected_slots.end();
@@ -1090,6 +1097,9 @@ namespace sigslot {
             {
                 typename connections_list::iterator itNext = it;
                 ++itNext;
+
+                if (destroy)
+                    (*it)->getdest()->signal_disconnect(this);
 
                 if(pslot == NULL || (*it)->getdest() == pslot)
                 {
@@ -1115,7 +1125,7 @@ namespace sigslot {
 
         ~signal6()
         {
-            disconnect(NULL);
+            signal_destroy(true);
         }
 
         template<class desttype>
@@ -1157,6 +1167,12 @@ namespace sigslot {
 
         void disconnect(has_slots<mt_policy>* pslot = NULL)
         {
+            signal_destroy(false, pslot);
+        }
+
+    private:
+        void signal_destroy(bool destroy, has_slots<mt_policy>* pslot = NULL)
+        {
             lock_block<mt_policy> lock(this);
             typename connections_list::iterator it = m_connected_slots.begin();
             typename connections_list::iterator itEnd = m_connected_slots.end();
@@ -1165,6 +1181,9 @@ namespace sigslot {
             {
                 typename connections_list::iterator itNext = it;
                 ++itNext;
+
+                if (destroy)
+                    (*it)->getdest()->signal_disconnect(this);
 
                 if(pslot == NULL || (*it)->getdest() == pslot)
                 {
@@ -1190,7 +1209,7 @@ namespace sigslot {
 
         ~signal7()
         {
-            disconnect();
+            signal_destroy(true);
         }
 
         template<class desttype>
@@ -1233,6 +1252,12 @@ namespace sigslot {
 
         void disconnect(has_slots<mt_policy>* pslot = NULL)
         {
+            signal_destroy(false, pslot);
+        }
+
+    private:
+        void signal_destroy(bool destroy, has_slots<mt_policy>* pslot = NULL)
+        {
             lock_block<mt_policy> lock(this);
             typename connections_list::iterator it = m_connected_slots.begin();
             typename connections_list::iterator itEnd = m_connected_slots.end();
@@ -1241,6 +1266,9 @@ namespace sigslot {
             {
                 typename connections_list::iterator itNext = it;
                 ++itNext;
+
+                if (destroy)
+                    (*it)->getdest()->signal_disconnect(this);
 
                 if(pslot == NULL || (*it)->getdest() == pslot)
                 {
@@ -1267,7 +1295,7 @@ namespace sigslot {
 
         ~signal8()
         {
-            disconnect();
+            signal_destroy(true);
         }
 
         template<class desttype>
@@ -1311,6 +1339,12 @@ namespace sigslot {
 
         void disconnect(has_slots<mt_policy>* pslot = NULL)
         {
+            signal_destroy(false, pslot);
+        }
+
+    private:
+        void signal_destroy(bool destroy, has_slots<mt_policy>* pslot = NULL)
+        {
             lock_block<mt_policy> lock(this);
             typename connections_list::iterator it = m_connected_slots.begin();
             typename connections_list::iterator itEnd = m_connected_slots.end();
@@ -1319,6 +1353,9 @@ namespace sigslot {
             {
                 typename connections_list::iterator itNext = it;
                 ++itNext;
+
+                if (destroy)
+                    (*it)->getdest()->signal_disconnect(this);
 
                 if(pslot == NULL || (*it)->getdest() == pslot)
                 {
@@ -1332,6 +1369,49 @@ namespace sigslot {
 
     protected:
         connections_list m_connected_slots;
+    };
+
+    template<class mt_policy = SIGSLOT_DEFAULT_MT_POLICY>
+    class has_slots : public mt_policy
+    {
+    private:
+        typedef std::set<_signal_base<mt_policy> *> sender_set;
+        typedef typename sender_set::const_iterator const_iterator;
+    public:
+        void signal_connect(_signal_base<mt_policy>* sender)
+        {
+            lock_block<mt_policy> lock(this);
+            m_senders.insert(sender);
+        }
+
+        void signal_disconnect(_signal_base<mt_policy>* sender)
+        {
+            lock_block<mt_policy> lock(this);
+            m_senders.erase(sender);
+        }
+
+        virtual ~has_slots()
+        {
+            disconnect();
+        }
+
+        void disconnect()
+        {
+            lock_block<mt_policy> lock(this);
+            const_iterator it = m_senders.begin();
+            const_iterator itEnd = m_senders.end();
+
+            while(it != itEnd)
+            {
+                (*it)->disconnect(this);
+                ++it;
+            }
+
+            m_senders.clear();
+        }
+
+    private:
+        sender_set m_senders;
     };
 }; // namespace sigslot
 
