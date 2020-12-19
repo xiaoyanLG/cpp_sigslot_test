@@ -1,6 +1,5 @@
-#include <iostream>
+#include <stdio.h>
 #include "sigslot.h"
-using namespace std;
 
 #define CALL_FUNC_LOG printf("func: %s, line: %d\n", __FUNCTION__, __LINE__)
 
@@ -29,7 +28,7 @@ public:
 
 int main()
 {
-    cout << "Hello World!" << endl;
+    printf("sigslot.h usage show:\n");
     Switch sw3, sw4, all_on, all_off;
     Light lp1, lp2, lp3, lp4;
     sw3.Clicked.connect(&lp3, &Light::ToggleState);
@@ -45,5 +44,6 @@ int main()
 
     sw3.Clicked();
     all_on.Clicked.emit();
+    all_off.Clicked();
     return 0;
 }
